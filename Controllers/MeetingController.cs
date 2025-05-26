@@ -1,24 +1,41 @@
+using MeetingApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeetingApp.Controllers
 {
     public class MeetingController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Apply()
         {
             return View();
         }
 
-
-        public IActionResult Apply()  
+        [HttpPost]
+        public IActionResult Apply(UserInfo model)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                Repository.CreateUser(model);
+                ViewBag.UserCount = Repository.Users.Where(x => x.WillAttend == true).Count();
+
+                return View("Thanks", model);
+            }
+            else
+            {
+                return View(model);
+            }
         }
-        
+
 
         public IActionResult List()
         {
-            return View();
+            return View(Repository.Users);
+        }
+
+
+        public IActionResult Details(int id)
+        {
+            return View(Repository.GetById(id));
         }
     }
 }

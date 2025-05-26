@@ -1,30 +1,53 @@
+@model List<UserInfo>
+
 @{
     ViewBag.Title = "Toplantı Katılım Listesi";
 }
 
-<h1 class="h4">Toplantıya Katılım Listesi</h1>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Ad</th>
-            <th>Katılım Durumu</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Tolgahan Sayışman</td>
-            <td>Evet</td>
-            <td>
-                <a class="btn btn-sm btn-primary" href="#">Detay</a>
-            </td>
-        </tr>
-        <tr>
-            <td>Tolgahan Sayışman</td>
-            <td>Evet</td>
-            <td>
-                <a class="btn btn-sm btn-primary" href="#">Detay</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<main>
+    <h1 class="h4 text-center">Toplantıya Katılım Listesi</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Ad</th>
+                <th>Katılım Durumu</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @{
+                int i = 0;
+            }
+
+
+            @foreach (var user in Model)
+            {
+                var durum = user.WillAttend == true ? "Evet" : "Hayır";
+                var className = user.WillAttend == true ? "table-success" : "table-danger";
+
+                if (user.WillAttend == true)
+                {
+                    i++;
+                }
+
+                <tr class="@className">
+                    <td>@user.Name</td>
+                    <td>@durum</td>
+                    <td>
+                        <a class="btn btn-sm btn-primary" href="/Meeting/Details/@user.Id">Detay</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="card text-center">
+        <div class="card-body">
+            <span>Katılımcı sayısı: @i</span>
+        </div>
+        <div class="mb-2">
+            <a class="btn btn-sm btn-outline-primary" href="/Home/Index/">Anasayfa</a>
+        </div>
+    </div>
+</main>
